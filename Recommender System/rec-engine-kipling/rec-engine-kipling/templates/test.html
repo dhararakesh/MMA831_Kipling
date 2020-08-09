@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Recommender System</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="static/test.css">
+        <script src="https://code.jquery.com/jquery-latest.js"></script>
+        <script type="text/javascript">
+            var geocodeArr = JSON.parse({{ variable2|default('my_variable is not defined')|tojson}});
+            var codeArr = JSON.parse({{ variable3|default('my_variable is not defined')|tojson}});
+            <!--console.log(codeArr.data[0].product_category_name_english);-->
+            <!--console.log(geocodeArr.data.length)-->
+            $(document).ready(function(){
+            if(geocodeArr.data.length > 0 ){
+                $("#tabletitle").append("Recommendations for: " + geocodeArr.data[0].uid);
+                for ( x in geocodeArr.data){
+                    $("#recom").append('<tr><td>' + geocodeArr.data[x].product_category_name_english + '</td><td>' + geocodeArr.data[x].product_id + '</td></tr>'); 
+                    
+                    <!--console.log(geocodeArr.data[1].uid);-->
+                    <!--console.log($("table"));-->
+                }
+            }
+            if(codeArr.data.length > 0 ){
+                for ( y in codeArr.data){
+                    $("#top").append('<tr><td>' + codeArr.data[y].product_category_name_english + '</td><td>' + codeArr.data[y].product_id + '</td></tr>'); 
+                    
+                }
+            }    
+                <!--once done clear objects-->
+                delete(variable1);
+                delete(variable2);
+                delete(variable3);
+            });
+        </script>
+    </head>
+    <body>
+    <br>
+    <br>
+    <div class="container">
+        <div class="jumbotron">
+            <centre><h2>Team Kipling's Recommender System</h2></centre>
+        </div>
+        <form action="/recommender" method="post">
+          <div class="form-group">
+            <label for="FirstName">Customer Unique ID: </label>
+            <input type="FirstName" class="form-control" name="first_name" placeholder="Enter Customer Unique ID">
+            <small class="form-text text-muted">Test: 8c9ca7a5718a991b4f765b8c3d569b85</smal
+          </div>
+          <br>
+          <div class="form-group">
+          <centre><button type="submit" class="btn btn-info">Submit</button></centre>
+          </div>
+        </form>
+        <br>
+        <br>
+        <h3 id="tabletitle"></h3>
+        <div class="row">
+          <div class="table-responsive col-md-6">
+              <h4>Your top product recommendations:</h4>
+              <table id="recom" class="table" cellspacing="0" width="100%">
+                <tr>
+                    <th>Product Category</th>
+                    <th>Product ID</th>
+                </tr>
+              </table>
+          </div>
+          <div class="table-responsive col-md-6">
+              <h4>You may also like:</h4>
+              <table id="top" class="table" cellspacing="0" width="100%">
+                <tr>
+                    <th>Product Category</th>
+                    <th>Product ID</th>
+                </tr>
+              </table>
+          </div>
+        </div>
+        
+        <br>
+        <centre><a href="/" class="btn btn-info" role="button">Back Home</a></centre>
+    </div>
+        
+    </body>
+</html>
